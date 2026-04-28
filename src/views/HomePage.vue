@@ -1,56 +1,51 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
+    <ion-header>
       <ion-toolbar>
-        <ion-title>Blank</ion-title>
+        <ion-title>Meus Livros</ion-title>
+        <ion-buttons slot="end">
+          <ion-button @click="sair" color="danger">
+            <ion-icon slot="icon-only" :icon="logOutOutline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-
-      <div id="container">
-        <strong>Ready to create an app?</strong>
-        <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
+    <ion-content class="ion-padding">
+      <ion-list>
+        <ion-item v-for="livro in livros" :key="livro.id" @click="verDetalhe(livro.id)" button>
+          <ion-label>
+            <h2>{{ livro.titulo }}</h2>
+            <p>{{ livro.autor }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import {
+  IonPage, IonHeader, IonToolbar, IonTitle, IonContent,
+  IonList, IonItem, IonLabel, IonButton, IonButtons, IonIcon
+} from '@ionic/vue'
+import { logOutOutline } from 'ionicons/icons'
+
+const livros = ref([
+  { id: 1, titulo: 'Dom Casmurro', autor: 'Machado de Assis' },
+  { id: 2, titulo: '1984', autor: 'George Orwell' },
+  { id: 3, titulo: 'O Pequeno Príncipe', autor: 'Antoine de Saint-Exupéry' }
+])
+
+const router = useRouter()
+
+const verDetalhe = (id: number) => {
+  router.push(`/book/${id}`)
+}
+
+const sair = () => {
+  router.push('/login')
+}
 </script>
-
-<style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
-}
-</style>
